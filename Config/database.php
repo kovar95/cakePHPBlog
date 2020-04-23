@@ -72,7 +72,7 @@ class DATABASE_CONFIG {
 		'host' => 'localhost',
 		'login' => 'root',
 		'password' => '',
-		'database' => 'forum',
+		'database' => 'blog',
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);

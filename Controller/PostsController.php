@@ -1,13 +1,14 @@
 <?php
 
 class PostsController extends AppController {
-    public $helpers = array('Html', 'Form');
+    public $helpers = array('Html', 'Form', 'Flash');
+    public $components = array('Flash');
 
     public function index() {
         $this->set('posts', $this->Post->find('all'));
     }
 
-    public function view($id = null) {
+    public function view($id) {
         if (!$id) {
             throw new NotFoundException(__('Invalid post'));
         }
@@ -77,18 +78,21 @@ class PostsController extends AppController {
         if ($this->action === 'add') {
             return true;
         }
-    
+
         // The owner of a post can edit and delete it
         if (in_array($this->action, array('edit', 'delete'))) {
             $postId = (int) $this->request->params['pass'][0];
             if ($this->Post->isOwnedBy($postId, $user['id'])) {
                 return true;
+            } else {
+                $this->Flash->error(
+                    __('You are not authorized to make changes to this post!')
+                );
             }
         }
     
         return parent::isAuthorized($user);
     }
-
 }
 
 ?>
